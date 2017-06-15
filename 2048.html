@@ -1,15 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
+<html><!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>2048</title>
 <style type="text/css">
 #gridPanel{
-		width:480px;
-		height:480px;
+		width:600px;
+		height:600px;
 		margin:0 auto;
-		background-color:#bbada0;
-		border-radius:10px;
+		background-color:#FFFFFF;
 		position:relative;	
 	}
 	.grid,.cell{
@@ -39,6 +39,8 @@
 	#c02,#c12,#c22,#c32{left:248px;}
 	#c30,#c31,#c32,#c33{top:364px;}
 	#c03,#c13,#c23,#c33{left:364px;}
+	#c40,#c41,#c42,#c43{top:480px;}
+	#c04,#c14,#c24,#c34{left:480px;}
 	.n2{background-color:#eee3da;}
 	.n4{background-color:#ede0c8;}
 	.n8{background-color:#f2b179;}
@@ -71,42 +73,64 @@
         <div id="g01" class="grid"></div>
         <div id="g02" class="grid"></div>
         <div id="g03" class="grid"></div>
+		<div id="g04" class="grid"></div>
         
         <div id="g10" class="grid"></div>
         <div id="g11" class="grid"></div>
         <div id="g12" class="grid"></div>
         <div id="g13" class="grid"></div>
+		<div id="g14" class="grid"></div>
         
         <div id="g20" class="grid"></div>
         <div id="g21" class="grid"></div>
         <div id="g22" class="grid"></div>
         <div id="g23" class="grid"></div>
+		<div id="g24" class="grid"></div>
         
         <div id="g30" class="grid"></div>
         <div id="g31" class="grid"></div>
         <div id="g32" class="grid"></div>
         <div id="g33" class="grid"></div>
+		<div id="g34" class="grid"></div>
+		
+		
+		<div id="g40" class="grid"></div>
+        <div id="g41" class="grid"></div>
+        <div id="g42" class="grid"></div>
+        <div id="g43" class="grid"></div>
+		<div id="g44" class="grid"></div>
         
         <!--前景单元格-->
     	<div id="c00" class="cell n2">2</div>
         <div id="c01" class="cell n4">4</div>
         <div id="c02" class="cell n8">8</div>
         <div id="c03" class="cell n16">16</div>
-        
+        <div id="c04" class="cell"></div>
+		
+		
         <div id="c10" class="cell n32">32</div>
         <div id="c11" class="cell n64">64</div>
         <div id="c12" class="cell n128">128</div>
         <div id="c13" class="cell n256">256</div>
+		<div id="c14" class="cell"></div>
         
         <div id="c20" class="cell n512">512</div>
         <div id="c21" class="cell n1024">1024</div>
         <div id="c22" class="cell n2048">2048</div>
         <div id="c23" class="cell n4096">4096</div>
+		<div id="c24" class="cell"></div>
         
         <div id="c30" class="cell n8192">8192</div>
         <div id="c31" class="cell"></div>
         <div id="c32" class="cell"></div>
         <div id="c33" class="cell"></div>
+		<div id="c34" class="cell"></div>
+		
+		<div id="c40" class="cell"></div>
+        <div id="c41" class="cell"></div>
+        <div id="c42" class="cell"></div>
+        <div id="c43" class="cell"></div>
+		<div id="c44" class="cell"></div>
     </div>
     
     <!--Game Over!界面-->
@@ -115,7 +139,7 @@
         <!--前景小窗-->
         <p>Game Over!<br/>
         Score:<span id="finalScore"></span><br/>
-        <a class="button" id="restart" style="font-size:30px;" onclick="game.start()">爱心 Try again!</a>
+        <a class="button" id="restart" style="font-size:30px;" onclick="game.start()">Try again!</a>
         </p>    
     </div>
 </body>
@@ -129,10 +153,11 @@ var game={
 	GAME_OVER:0,
 	PLAYING:2,//动画正在播放中
 	start:function(){//启动游戏时调用
-		this.data=[ [0,0,0,0],
-					[0,0,0,0],
-					[0,0,0,0],
-					[0,0,0,0] ];	
+		this.data=[ [0,0,0,0,0],
+					[0,0,0,0,0],
+					[0,0,0,0,0],
+					[0,0,0,0,0],
+					[0,0,0,0,0]];	
 		//在两个随机位置生成2或4
 		this.score=0;	
 		this.state=this.RUNNING;
@@ -147,8 +172,8 @@ var game={
 	  /*遍历data数组，
 			只要发现==0，就返回false
 		如果退出循环，就返回true*/
-		for(var row=0;row<4;row++){//this.data.length=4
-			for(var col=0;col<4;col++){//this.data[row].length=4
+		for(var row=0;row<5;row++){//this.data.length=4
+			for(var col=0;col<5;col++){//this.data[row].length=4
 				if(this.data[row][col]==0){
 					return false;
 				}	
@@ -163,8 +188,8 @@ var game={
 		随机在0到3列中生成一个列下标col
 		如果该位置==0，随机选择2或4:如果Math.random()<0.5,选2，否则选4；放入该位置退出循环*/
 		while(true){
-			var row=Math.floor(Math.random()*(3-0+1)+0);
-			var col=Math.floor(Math.random()*(3-0+1)+0);
+			var row=Math.floor(Math.random()*(4-0+1)+0);
+			var col=Math.floor(Math.random()*(4-0+1)+0);
 			if(this.data[row][col]==0){
 				/*this.data[row][col]=Math.random()*(1-0+1)+0;
 				if(Math.random()<0.5){
@@ -179,8 +204,8 @@ var game={
 	},
 	canLeft:function(){
 		/*遍历每个元素（最左侧列除外），只要发现任意元素左侧数==0或者当前值==左侧值return true  如果循环正常结束，  return false*/
-		for(var row=0;row<4;row++){
-			for(var col=1;col<4;col++){
+		for(var row=0;row<5;row++){
+			for(var col=1;col<5;col++){
 				if(this.data[row][col]!=0){
 					if(this.data[row][col-1]==0||this.data[row][col]==this.data[row][col-1]){
 						return true;
@@ -192,7 +217,7 @@ var game={
 	},
 	moveLeft:function(){//实现左移所有行
 		if(this.canLeft()){//先判断能否左移
-			for(var row=0;row<4;row++){
+			for(var row=0;row<5;row++){
 				this.moveLeftInRow(row);
 			}
 			this.state=this.PLAYING;
@@ -212,7 +237,7 @@ var game={
 		否则，判断合并
 			如果自己==0，用下一个元素的值替换自己，将下一个元素的值设为0，让col留在原地：col--
 			如果自己==下一个元素 将自己*2； 将下一个元素设为0*/
-		for(var col=0;col<=2;col++){
+		for(var col=0;col<=3;col++){
 			var nextCol=this.getNextRight(row,col);
 			if(nextCol==-1){
 				break;
@@ -234,7 +259,7 @@ var game={
 	},
 	getNextRight:function(row,col){//获得当前行中，指定位置右侧第一个不为0的数，返回下一个为0的数的位置
 	  /*遍历当前位置右侧每个元素	只要返现！=0的，就返回其位置下标nextCol 退出循环，返回-1*/
-		for(var i=col+1;i<4;i++){
+		for(var i=col+1;i<5;i++){
 			if(this.data[row][i]!=0){
 				return i;	
 			}	
@@ -242,8 +267,8 @@ var game={
 		return -1;	
 	},
 	canRight:function(){//判断能否右移
-		for(var row=0;row<4;row++){
-			for(var col=2;col>=0;col--){
+		for(var row=0;row<5;row++){
+			for(var col=3;col>=0;col--){
 				if(this.data[row][col]!=0){
 					if(this.data[row][col+1]==0||this.data[row][col]==this.data[row][col+1]){
 						return true;
@@ -255,7 +280,7 @@ var game={
 	},
 	moveRight:function(){//向右移动所有行
 		if(this.canRight()){
-			for(var row=0;row<4;row++){
+			for(var row=0;row<5;row++){
 				this.moveRightInRow(row);
 			}
 			this.state=this.PLAYING;
@@ -270,7 +295,7 @@ var game={
 	},
 	moveRightInRow:function(row){//右移当前行
 		/*从右向左遍历检查，（最左边元素除外）*/
-		for(var col=3;col>0;col--){
+		for(var col=4;col>0;col--){
 			var nextCol=this.getNextLeft(row,col);
 			if(nextCol==-1){
 				break;
@@ -299,8 +324,8 @@ var game={
 		return -1;	
 	},
 	canUp:function(){
-		for(var row=1;row<4;row++){
-			for(var col=0;col<4;col++){
+		for(var row=1;row<5;row++){
+			for(var col=0;col<5;col++){
 				if(this.data[row][col]!=0){
 					if(this.data[row-1][col]==0||this.data[row][col]==this.data[row-1][col]){
 						return true;
@@ -312,7 +337,7 @@ var game={
 	},
 	moveUp:function(){
 		if(this.canUp()){//先判断能否左移
-		for(var col=0;col<4;col++){
+		for(var col=0;col<5;col++){
 				this.moveUpInCol(col);
 			}
 			this.state=this.PLAYING;
@@ -326,7 +351,7 @@ var game={
 		}
 	},
 	moveUpInCol:function(col){
-		for(var row=0;row<3;row++){
+		for(var row=0;row<4;row++){
 			var nextRow=this.getNextDown(row,col);
 			if(nextRow==-1){
 				break;
@@ -346,7 +371,7 @@ var game={
 		}
 	},
 	getNextDown:function(row,col){
-		for(var i=row+1;i<4;i++){
+		for(var i=row+1;i<5;i++){
 			if(this.data[i][col]!=0){
 					return i;
 			}
@@ -354,8 +379,8 @@ var game={
 		return -1;
 	},
 	canDown:function(){//判断能否右移
-		for(var row=0;row<3;row++){
-			for(var col=0;col<4;col++){
+		for(var row=0;row<4;row++){
+			for(var col=0;col<5;col++){
 				if(this.data[row][col]!=0){
 					if(this.data[row+1][col]==0||this.data[row][col]==this.data[row+1][col]){
 						return true;
@@ -382,7 +407,7 @@ var game={
 	},
 	moveDownInCol:function(col){//右移当前行
 		/*从右向左遍历检查，（最左边元素除外）*/
-		for(var row=3;row>0;row--){
+		for(var row=4;row>0;row--){
 			var nextRow=this.getNextUp(row,col);
 			if(nextRow==-1){
 				break;
@@ -467,15 +492,15 @@ var game={
 		if(!this.isFull()){return false;}
 		/*已经满了*/	/*if(this.canLeft()||this.canRight()||this.canUp()||this.canDown()){return false;}
 		else{return ture;}*/
-		for(var row=0;row<4;row++){
-			for(var col=0;col<4;col++){
+		for(var row=0;row<5;row++){
+			for(var col=0;col<5;col++){
 				//if(this.data[row][col==0]){return false;}
-				if(col<3){/*检查右侧相邻*/
+				if(col<4){/*检查右侧相邻*/
 					if(this.data[row][col]==this.data[row][col+1]){
 						return false;
 					}
 				}
-				if(row<3){/*检查下方相邻*/
+				if(row<4){/*检查下方相邻*/
 					if(this.data[row][col]==this.data[row+1][col]){
 						return false;
 					}
